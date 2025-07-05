@@ -302,6 +302,80 @@ def test_ignore(file_path: str, config_name: str) -> None:
         click.echo("Result: ✅ NOT IGNORED")
 
 
+@main.command()
+@click.argument('config_name')
+@click.option('--force', '-f', is_flag=True, help='Force removal without confirmation')
+def rm(config_name: str, force: bool) -> None:
+    """Remove watcher configuration and systemd service"""
+    config_manager = ConfigManager()
+    
+    if not config_manager.config_exists(config_name):
+        click.echo(f"❌ Config '{config_name}' does not exist")
+        sys.exit(1)
+    
+    # Get config info before deletion
+    status_info = config_manager.get_config_status(config_name)
+    
+    # Confirmation prompt
+    if not force:
+        click.echo(f"This will remove the watcher configuration '{config_name}' and stop its service.")
+        click.echo(f"Config file: {config_manager.get_config_path(config_name)}")
+        if status_info['service_active']:
+            click.echo("⚠️  The service is currently running and will be stopped.")
+        if not click.confirm("Are you sure you want to continue?"):
+            click.echo("Operation cancelled.")
+            return
+    
+    service_name = f"watcher@{config_name}.service"
+    
+    # Stop and disable service if it exists
+    if status_info['service_active'] or status_info['service_enabled']:
+        try:
+            # Stop the service if running
+            if status_info['service_active']:
+                subprocess.run(['systemctl', '--user', 'stop', service_name], check=True, capture_output=True)
+                click.echo(f"✅ Stopped service: {service_name}")
+            
+            # Disable the service if enabled
+            if status_info['service_enabled']:
+                subprocess.run(['systemctl', '--user', 'disable', service_name], check=True, capture_output=True)
+                click.echo(f"✅ Disabled service: {service_name}")
+            
+            # Reload daemon
+            subprocess.run(['systemctl', '--user', 'daemon-reload'], check=True, capture_output=True)
+            
+        except subprocess.CalledProcessError as e:
+            click.echo(f"⚠️  Warning: Failed to stop/disable service: {e}")
+        except FileNotFoundError:
+            click.echo("⚠️  Warning: systemctl not found, skipping service cleanup")
+    
+    # Remove config file
+    config_path = config_manager.get_config_path(config_name)
+    try:
+        config_path.unlink()
+        click.echo(f"✅ Removed config file: {config_path}")
+    except FileNotFoundError:
+        click.echo(f"⚠️  Config file not found: {config_path}")
+    except Exception as e:
+        click.echo(f"❌ Failed to remove config file: {e}")
+        sys.exit(1)
+    
+    # Check if this was the last config and offer to remove systemd service template
+    remaining_configs = config_manager.list_configs()
+    if not remaining_configs:
+        service_template = Path.home() / '.config' / 'systemd' / 'user' / 'watcher@.service'
+        if service_template.exists():
+            if force or click.confirm("This was the last configuration. Remove systemd service template?"):
+                try:
+                    service_template.unlink()
+                    subprocess.run(['systemctl', '--user', 'daemon-reload'], check=True, capture_output=True)
+                    click.echo(f"✅ Removed systemd service template: {service_template}")
+                except Exception as e:
+                    click.echo(f"⚠️  Warning: Failed to remove service template: {e}")
+    
+    click.echo(f"✅ Configuration '{config_name}' removed successfully")
+
+
 def _install_systemd_service() -> None:
     """Install systemd service template"""
     service_dir = Path.home() / '.config' / 'systemd' / 'user'
@@ -314,13 +388,14 @@ def _install_systemd_service() -> None:
         return
     
     # Create service file content
+    watcher_path = shutil.which('watcher') or 'watcher'
     service_content = f"""[Unit]
 Description=Watcher for %i configuration
 After=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=watcher run %i
+ExecStart={watcher_path} run %i
 WorkingDirectory=%h
 Restart=always
 RestartSec=10
