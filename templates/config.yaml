@@ -3,8 +3,8 @@
 
 # Basic settings
 name: "default"
-watch_directory: "~/.dotfiles"
-repo_directory: "~/.dotfiles"
+watch_directory: "~/repo"
+repo_directory: "~/repo"
 
 # Timing settings (in seconds)
 commit_delay: 60        # Wait time before committing after last change
