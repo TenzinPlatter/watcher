@@ -19,6 +19,11 @@ notify_on_remote_changes: true
 auto_push: true         # Automatically push after commits
 respect_gitignore: true # Follow gitignore patterns
 
+# Git operation controls
+enable_commits: true    # Enable/disable automatic commits
+enable_fetch: true      # Enable/disable periodic fetch operations
+fetch_branches: []      # List of branches to fetch from (empty = all branches)
+
 # Project-specific ignore patterns (in addition to global ignore file)
 # Optional: Add patterns specific to this project
 ignore_patterns: []

@@ -42,8 +42,15 @@ class GitCommitHandler(FileSystemEventHandler):
         self.fetch_timer: Optional[threading.Timer] = None  # Timer for periodic fetching
         
         # Initialize
-        self._commit_existing_changes()
-        self.start_fetch_timer()
+        if self.config.get('enable_commits', True):
+            self._commit_existing_changes()
+        else:
+            print("🚫 Commits disabled - skipping existing changes check")
+        
+        if self.config.get('enable_fetch', True):
+            self.start_fetch_timer()
+        else:
+            print("🚫 Fetch disabled - skipping periodic fetch")
         
     def _run_git_command(self, cmd: List[str], cwd: Union[str, Path], description: str = "Git command") -> subprocess.CompletedProcess[str]:
         """Run a git command with proper error logging"""
@@ -142,6 +149,11 @@ class GitCommitHandler(FileSystemEventHandler):
         """Handle a file change event"""
         # Check if file should be excluded
         if self._should_exclude_file(file_path):
+            return
+        
+        # Check if commits are enabled
+        if not self.config.get('enable_commits', True):
+            print(f"🚫 Commits disabled - ignoring {change_type} event for {file_path}")
             return
             
         file_path = Path(file_path).resolve()
@@ -353,6 +365,10 @@ class GitCommitHandler(FileSystemEventHandler):
     
     def start_fetch_timer(self) -> None:
         """Start the periodic fetch timer"""
+        if not self.config.get('enable_fetch', True):
+            print("🚫 Fetch disabled - not starting periodic fetch timer")
+            return
+            
         if self.fetch_timer:
             self.fetch_timer.cancel()
             
@@ -362,6 +378,10 @@ class GitCommitHandler(FileSystemEventHandler):
     
     def _periodic_fetch(self) -> None:
         """Perform periodic fetch and notify of remote changes"""
+        if not self.config.get('enable_fetch', True):
+            print("🚫 Fetch disabled - skipping periodic fetch")
+            return
+            
         print("🔄 Performing periodic fetch...")
         
         # Fetch main repo
@@ -384,6 +404,21 @@ class GitCommitHandler(FileSystemEventHandler):
     
     def _fetch_and_check_changes(self, repo_dir: Path, repo_name: str) -> Optional[str]:
         """Fetch and check for remote changes"""
+        # Check if remote has new commits
+        branch_result = self._run_git_command(['git', 'branch', '--show-current'], repo_dir, f"Get {repo_name} branch")
+        if branch_result.returncode != 0:
+            return None
+        current_branch = branch_result.stdout.strip()
+        
+        if not current_branch:
+            return None
+        
+        # Check if we should fetch from this branch
+        fetch_branches = self.config.get('fetch_branches', [])
+        if fetch_branches and current_branch not in fetch_branches:
+            print(f"🚫 Branch '{current_branch}' not in fetch_branches list - skipping fetch for {repo_name}")
+            return None
+        
         # Get current HEAD
         head_result = self._run_git_command(['git', 'rev-parse', 'HEAD'], repo_dir, f"Get {repo_name} HEAD")
         if head_result.returncode != 0:
@@ -393,15 +428,6 @@ class GitCommitHandler(FileSystemEventHandler):
         # Fetch
         fetch_result = self._run_git_command(['git', 'fetch'], repo_dir, f"Fetch {repo_name}")
         if fetch_result.returncode != 0:
-            return None
-            
-        # Check if remote has new commits
-        branch_result = self._run_git_command(['git', 'branch', '--show-current'], repo_dir, f"Get {repo_name} branch")
-        if branch_result.returncode != 0:
-            return None
-        current_branch = branch_result.stdout.strip()
-        
-        if not current_branch:
             return None
             
         remote_head_result = self._run_git_command(

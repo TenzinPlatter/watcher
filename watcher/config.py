@@ -70,7 +70,10 @@ class ConfigManager:
             'auto_push': True,
             'respect_gitignore': True,
             'ignore_patterns': [],
-            'ignore_files': []
+            'ignore_files': [],
+            'enable_commits': True,
+            'enable_fetch': True,
+            'fetch_branches': []
         }
         
         try:
@@ -137,7 +140,10 @@ class ConfigManager:
                 'auto_push': True,
                 'respect_gitignore': True,
                 'ignore_patterns': [],
-                'ignore_files': []
+                'ignore_files': [],
+                'enable_commits': True,
+                'enable_fetch': True,
+                'fetch_branches': []
             }
             
         # Apply template customizations
