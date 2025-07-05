@@ -1,0 +1,4 @@
+# Core dependencies for watcher
+watchdog>=3.0.0
+PyYAML>=6.0
+click>=8.0.0

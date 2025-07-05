@@ -1,0 +1,22 @@
+[Unit]
+Description=Watcher for %i configuration
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=watcher run %i
+WorkingDirectory=%h
+Restart=always
+RestartSec=10
+
+# Environment variables
+Environment=HOME=%h
+Environment=PATH=/usr/local/bin:/usr/bin:/bin:%h/.local/bin
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=watcher-%i
+
+[Install]
+WantedBy=default.target

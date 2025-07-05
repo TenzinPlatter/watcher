@@ -1,0 +1,134 @@
+# Example Python project configuration
+# This configuration is optimized for Python development
+
+name: "python-project"
+watch_directory: "~/projects/my-python-app"
+repo_directory: "~/projects/my-python-app"
+
+# Timing - Moderate delays for Python development
+commit_delay: 90           # 1.5 minutes - allows for multiple file edits
+fetch_interval: 600        # 10 minutes - moderate collaboration frequency
+
+# Notifications - Standard notifications
+enable_notifications: true
+notify_on_commit: true
+notify_on_remote_changes: true
+
+# Git settings
+auto_push: true           # Auto-push for personal projects
+respect_gitignore: true   # Honor .gitignore files
+
+# Python-specific ignore patterns
+ignore_patterns:
+  # Byte-compiled / optimized / DLL files
+  - "*.pyc"
+  - "*.pyo"
+  - "*.pyd"
+  - "__pycache__/"
+  - "*.py[cod]"
+  - "*$py.class"
+  - "*.so"
+  
+  # Build and distribution
+  - "build/"
+  - "develop-eggs/"
+  - "dist/"
+  - "downloads/"
+  - "eggs/"
+  - ".eggs/"
+  - "lib/"
+  - "lib64/"
+  - "parts/"
+  - "sdist/"
+  - "var/"
+  - "wheels/"
+  - "*.egg-info/"
+  - ".installed.cfg"
+  - "*.egg"
+  - "MANIFEST"
+  
+  # Virtual environments
+  - ".env"
+  - ".venv"
+  - "env/"
+  - "venv/"
+  - "ENV/"
+  - "env.bak/"
+  - "venv.bak/"
+  
+  # Testing
+  - ".pytest_cache/"
+  - ".coverage"
+  - "htmlcov/"
+  - ".tox/"
+  - ".nox/"
+  - "coverage.xml"
+  - "*.cover"
+  - ".hypothesis/"
+  
+  # Jupyter Notebook
+  - ".ipynb_checkpoints"
+  - "*/.ipynb_checkpoints/*"
+  
+  # IPython
+  - "profile_default/"
+  - "ipython_config.py"
+  
+  # pyenv
+  - ".python-version"
+  
+  # pipenv
+  - "Pipfile.lock"
+  
+  # PEP 582
+  - "__pypackages__/"
+  
+  # Celery
+  - "celerybeat-schedule"
+  - "celerybeat.pid"
+  
+  # SageMath parsed files
+  - "*.sage.py"
+  
+  # Rope project settings
+  - ".ropeproject"
+  
+  # mkdocs documentation
+  - "/site"
+  
+  # mypy
+  - ".mypy_cache/"
+  - ".dmypy.json"
+  - "dmypy.json"
+  
+  # Pyre type checker
+  - ".pyre/"
+  
+  # pytype static type analyzer
+  - ".pytype/"
+  
+  # Cython debug symbols
+  - "cython_debug/"
+  
+  # IDE files
+  - ".vscode/"
+  - ".idea/"
+  - "*.swp"
+  - "*.swo"
+  
+  # OS files
+  - ".DS_Store"
+  - "Thumbs.db"
+  
+  # Project-specific
+  - "*.log"
+  - "logs/"
+  - "tmp/"
+  - "temp/"
+
+# Additional ignore files
+ignore_files:
+  # Language-specific ignore file
+  - "~/.config/watcher/python-ignore"
+  # Project-specific ignore file
+  - ".watcher-ignore"

@@ -1,0 +1,62 @@
+# Global ignore file for watcher
+# This file contains patterns that should be ignored by all watcher instances
+# Uses gitignore syntax: https://git-scm.com/docs/gitignore
+
+# Git internal files
+.git/
+.git\
+/.git/
+\.git\
+index.lock
+COMMIT_EDITMSG
+HEAD.lock
+refs/heads/
+refs/remotes/
+logs/HEAD
+logs/refs/
+objects/
+hooks/
+info/
+packed-refs
+config.lock
+shallow.lock
+modules/
+.git/index
+.git/HEAD
+.git/refs/
+.git/logs/
+.git/objects/
+.git/modules/
+ORIG_HEAD
+FETCH_HEAD
+MERGE_HEAD
+CHERRY_PICK_HEAD
+
+# Temporary files
+.tmp_
+__pycache__/
+*.pyc
+*.pyo
+*.swp
+*.swo
+*.tmp
+*~
+*.bak
+
+# Editor files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Common build artifacts
+build/
+dist/
+*.egg-info/
+node_modules/
+.cache/
+.pytest_cache/

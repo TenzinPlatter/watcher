@@ -1,0 +1,56 @@
+# Example dotfiles configuration
+# This configuration is optimized for monitoring personal dotfiles
+
+name: "dotfiles"
+watch_directory: "~/.dotfiles"
+repo_directory: "~/.dotfiles"
+
+# Timing - Less frequent commits for configuration files
+commit_delay: 300          # 5 minutes - allows for multiple config changes
+fetch_interval: 1800       # 30 minutes - check for updates less frequently
+
+# Notifications - Enable for important system files
+enable_notifications: true
+notify_on_commit: true
+notify_on_remote_changes: true
+
+# Git settings
+auto_push: true           # Auto-push dotfiles changes
+respect_gitignore: true   # Honor existing .gitignore
+
+# Dotfiles-specific ignore patterns
+ignore_patterns:
+  # OS and editor files
+  - ".DS_Store"
+  - "*.swp"
+  - "*.swo"
+  - "*~"
+  - ".vscode/"
+  - "*.sublime-*"
+  
+  # Temporary files
+  - "*.tmp"
+  - "*.bak"
+  - ".tmp_*"
+  
+  # Cache and state files
+  - ".cache/"
+  - "cache/"
+  - "*.log"
+  
+  # Sensitive files (examples - adjust for your setup)
+  - "*.secret"
+  - ".env.local"
+  - "private/"
+  
+  # Application-specific
+  - ".zsh_history"
+  - ".bash_history"
+  - ".python_history"
+  - ".lesshst"
+  - ".sqlite_history"
+
+# Additional ignore files
+ignore_files:
+  # You might have a dotfiles-specific ignore file
+  - "~/.dotfiles/.watcher-ignore"

@@ -1,0 +1,33 @@
+# Watcher Configuration Template
+# This file contains configuration for a watcher instance
+
+# Basic settings
+name: "default"
+watch_directory: "~/.dotfiles"
+repo_directory: "~/.dotfiles"
+
+# Timing settings (in seconds)
+commit_delay: 60        # Wait time before committing after last change
+fetch_interval: 600     # Interval between remote fetches (10 minutes)
+
+# Notification settings
+enable_notifications: true
+notify_on_commit: true       # Send notification for main repo commits
+notify_on_remote_changes: true
+
+# Git settings
+auto_push: true         # Automatically push after commits
+respect_gitignore: true # Follow gitignore patterns
+
+# Project-specific ignore patterns (in addition to global ignore file)
+# Optional: Add patterns specific to this project
+ignore_patterns: []
+#  - "*.log"
+#  - "build/"
+#  - "dist/"
+
+# Optional: Additional ignore files to read
+# These files will be read in addition to the global ignore file
+ignore_files: []
+#  - "~/.config/watcher/nodejs-ignore"  # Language-specific ignore
+#  - ".watcher-ignore"                  # Project-local ignore file

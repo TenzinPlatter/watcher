@@ -1,0 +1,78 @@
+# Example Node.js project configuration
+# This configuration is optimized for active Node.js development
+
+name: "nodejs-app"
+watch_directory: "~/projects/my-node-app"
+repo_directory: "~/projects/my-node-app"
+
+# Timing - Fast commits for active development
+commit_delay: 60           # 1 minute - quick commits during development
+fetch_interval: 300        # 5 minutes - frequent checks for team collaboration
+
+# Notifications - Full notifications for active projects
+enable_notifications: true
+notify_on_commit: true
+notify_on_remote_changes: true
+
+# Git settings
+auto_push: false          # Manual push for code review workflow
+respect_gitignore: true   # Always respect .gitignore
+
+# Node.js specific ignore patterns
+ignore_patterns:
+  # Build outputs
+  - "dist/"
+  - "build/"
+  - "out/"
+  - ".next/"
+  - ".nuxt/"
+  - ".vuepress/dist/"
+  
+  # Dependencies (should be in .gitignore too)
+  - "node_modules/"
+  - "npm-debug.log*"
+  - "yarn-debug.log*"
+  - "yarn-error.log*"
+  
+  # Test and coverage
+  - "coverage/"
+  - ".nyc_output/"
+  - ".jest/"
+  
+  # Environment files
+  - ".env.local"
+  - ".env.development.local"
+  - ".env.test.local"
+  - ".env.production.local"
+  
+  # Cache directories
+  - ".cache/"
+  - ".parcel-cache/"
+  - ".eslintcache"
+  
+  # Logs
+  - "*.log"
+  - "logs/"
+  
+  # Runtime data
+  - "pids/"
+  - "*.pid"
+  - "*.seed"
+  - "*.pid.lock"
+  
+  # Editor files
+  - ".vscode/"
+  - ".idea/"
+  - "*.swp"
+  - "*.swo"
+  
+  # OS files
+  - ".DS_Store"
+  - "Thumbs.db"
+
+# Additional ignore files
+ignore_files:
+  # Language-specific ignore file
+  - "~/.config/watcher/nodejs-ignore"
+  # Project-specific ignore file
+  - ".watcher-ignore"

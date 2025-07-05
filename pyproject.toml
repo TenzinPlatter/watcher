@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "watcher"
+version = "0.1.0"
+description = "Multi-directory file watcher with automated git commits"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Tenzin"},
+]
+keywords = ["git", "automation", "file-watcher", "commit", "dotfiles"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: System :: Filesystems",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "watchdog>=3.0.0",
+    "PyYAML>=6.0",
+    "click>=8.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/TenzinPlatter/watcher"
+Repository = "https://github.com/TenzinPlatter/watcher"
+Issues = "https://github.com/TenzinPlatter/watcher/issues"
+
+[project.scripts]
+watcher = "watcher.cli:main"
+
+[tool.setuptools]
+packages = ["watcher"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+watcher = ["../templates/*"]
