@@ -192,7 +192,7 @@ def status(config_name: str) -> None:
 
 
 @main.command()
-def list() -> None:
+def ls() -> None:
     """List all available configs and their status"""
     config_manager = ConfigManager()
     configs = config_manager.list_configs()
