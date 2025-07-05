@@ -37,7 +37,7 @@ watcher down
 ### Development Installation
 
 ```bash
-git clone <repo>
+git clone https://github.com/TenzinPlatter/watcher.git
 cd watcher
 pip install -e .
 ```
@@ -342,7 +342,3 @@ watcher/
 ├── pyproject.toml
 └── README.md
 ```
-
-## License
-
-MIT License - see LICENSE file for details.
